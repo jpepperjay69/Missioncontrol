@@ -3,7 +3,7 @@ services:
   - type: web
     name: mission-control-web
     env: node
-    plan: starter
+    plan: 0.5c-512mb
     buildCommand: npm --prefix server install && npm --prefix client install && npm --prefix client run build
     startCommand: node server/index.js
     envVars:
@@ -26,7 +26,7 @@ services:
   - type: cron
     name: mission-control-reminders
     env: node
-    plan: starter
+    plan: 0.5c-512mb
     schedule: "0 9 * * *"
     buildCommand: npm --prefix server install
     startCommand: node server/cron.js
@@ -40,6 +40,6 @@ services:
 
 databases:
   - name: mission-control-db
-    plan: starter
+    plan: 0.1c-256mb
     databaseName: missioncontrol
     user: missioncontrol

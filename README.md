@@ -74,12 +74,12 @@ node server/index.js            # serves the built frontend + API on $PORT (defa
 
 | Service | Plan | Purpose |
 | --- | --- | --- |
-| `mission-control-web` (Node web) | Starter (~$7/mo) | Express API + React frontend |
-| `mission-control-db` (PostgreSQL) | Starter (~$6/mo) | All app data, including receipt files |
-| `mission-control-reminders` (cron, daily 9:00 UTC) | Starter cron (~$1/mo min) | Due-reminder notifications |
+| `mission-control-web` (Node web) | 0.5c-512mb (~$7/mo) | Express API + React frontend |
+| `mission-control-db` (PostgreSQL) | 0.1c-256mb (~$6/mo) | All app data, including receipt files |
+| `mission-control-reminders` (cron, daily 9:00 UTC) | 0.5c-512mb cron (~$1/mo min) | Due-reminder notifications |
 
 Expected total: **~$14/month** at Render's October 2026 list prices. (The free web tier
-spins down after inactivity and free Postgres expires, so the paid Starter plans are
+spins down after inactivity and free Postgres expires, so the paid plans are
 the right fit for a production app.) Re-check prices at signup.
 
 ### Environment variables
