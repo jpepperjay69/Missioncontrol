@@ -1,0 +1,17 @@
+export type User = { id: number; name: string; email: string; role: string };
+export type Donor = { id: number; name: string; email?: string; phone?: string; address?: string; notes?: string };
+export type Gift = { id: number; donor_id: number; amount: string; gift_date: string; method?: string; note?: string };
+export type EventItem = { id: number; title: string; event_date?: string; location?: string; description?: string; status: string };
+export type EventNote = { id: number; event_id: number; body: string; author_name?: string; created_at: string };
+export type Reminder = { id: number; title: string; event_id?: number | null; due_date?: string; notes?: string; completed: boolean; notified: boolean };
+export type Contact = { id: number; name: string; organization?: string; role?: string; email?: string; phone?: string; category?: string; notes?: string };
+export type LetterTemplate = { id: number; name: string; subject?: string; body: string };
+export type Letter = { id: number; donor_id?: number; gift_id?: number; template_id?: number; subject?: string; body: string; created_at: string };
+export type Staff = { id: number; name: string; role?: string; phone?: string; email?: string; hire_date?: string; notes?: string };
+export type MeetingNote = { id: number; meeting_date?: string; title: string; body: string };
+export type Payroll = { id: number; staff_id?: number | null; period_start?: string; period_end?: string; hours?: string; rate?: string; amount?: string; paid: boolean; note?: string };
+export type TruckExpense = { id: number; expense_date?: string; description: string; category?: string; amount: string; note?: string };
+export type Receipt = { id: number; title: string; vendor?: string; amount?: string; receipt_date?: string; note?: string; file_name: string; file_type: string; created_at: string };
+export type SigninSheet = { id: number; title: string; event_id?: number | null; sheet_date?: string; location?: string };
+export type SigninEntry = { id: number; sheet_id: number; name: string; contact?: string; time_in?: string };
+export type Notification = { id: number; kind: string; message: string; entity_type?: string; entity_id?: number; actor_name?: string; is_read: boolean; created_at: string };
