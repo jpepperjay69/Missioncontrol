@@ -11,6 +11,10 @@ function AdminAccounts({ me }: { me: User }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [msg, setMsg] = useState('');
+  const [pwFor, setPwFor] = useState<number | null>(null);
+  const [pw1, setPw1] = useState('');
+  const [pw2, setPw2] = useState('');
+  const [pwError, setPwError] = useState('');
 
   async function load() {
     try { setUsers(await get('/api/users')); } catch { /* ignore */ }
@@ -30,6 +34,19 @@ function AdminAccounts({ me }: { me: User }) {
     }
   }
 
+  async function savePw(e: React.FormEvent) {
+    e.preventDefault();
+    setPwError(''); setMsg('');
+    if (pw1 !== pw2) { setPwError('The two passwords do not match.'); return; }
+    try {
+      await put(`/api/users/${pwFor}/password`, { password: pw1 });
+      setPw1(''); setPw2(''); setPwFor(null);
+      setMsg('Password updated.');
+    } catch (err: unknown) {
+      setPwError(err instanceof Error ? err.message : 'Could not update password.');
+    }
+  }
+
   return (
     <div className="card" style={{ marginTop: 16 }}>
       <h3>Admin accounts</h3>
@@ -39,13 +56,26 @@ function AdminAccounts({ me }: { me: User }) {
       {users.map((u) => (
         <div className="list-item row" key={u.id}>
           <span style={{ flex: 1 }}>{u.name} — {u.email}</span>
-          <button onClick={async () => {
-            const pw = window.prompt(`New password for ${u.name}:`);
-            if (pw) { await put(`/api/users/${u.id}/password`, { password: pw }); setMsg('Password updated.'); }
-          }}>Set password</button>
+          <button onClick={() => { setPwFor(u.id); setPw1(''); setPw2(''); setPwError(''); }}>Set password</button>
           {u.id !== me.id && <button className="danger" onClick={async () => { await del(`/api/users/${u.id}`); load(); }}>Remove</button>}
         </div>
       ))}
+      {pwFor !== null && (
+        <div className="card" style={{ marginTop: 12 }}>
+          <h4>Set a new password for {users.find((u) => u.id === pwFor)?.name}</h4>
+          {pwError && <div className="error">{pwError}</div>}
+          <form onSubmit={savePw}>
+            <div className="form-grid">
+              <div><label>New password</label><input type="password" value={pw1} onChange={(e) => setPw1(e.target.value)} autoCapitalize="off" autoCorrect="off" autoComplete="new-password" required /></div>
+              <div><label>Confirm new password</label><input type="password" value={pw2} onChange={(e) => setPw2(e.target.value)} autoCapitalize="off" autoCorrect="off" autoComplete="new-password" required /></div>
+            </div>
+            <div className="row" style={{ marginTop: 12 }}>
+              <button className="primary" type="submit">Save password</button>
+              <button type="button" onClick={() => setPwFor(null)}>Cancel</button>
+            </div>
+          </form>
+        </div>
+      )}
       <form onSubmit={add}>
         <div className="form-grid">
           <div><label>Name</label><input value={name} onChange={(e) => setName(e.target.value)} required /></div>

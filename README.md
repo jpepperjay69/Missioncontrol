@@ -106,8 +106,11 @@ presigned URLs.
 
 - Passwords are hashed with bcrypt (via `bcryptjs`, the pure-JS implementation, so
   there is no native build step on Render).
-- There is no "forgot password" email flow yet: an admin resets another admin's
-  password from the home page's Admin accounts card (Set password button).
+- There is no "forgot password" email flow yet: a signed-in admin resets any
+  admin's password from the home page's Admin accounts card (Set password
+  button). If every admin is locked out, run the break-glass script from the
+  Render service shell: `node server/reset-password.js <email>` — it prints a
+  one-time temporary password (and stores only its hash) to sign in with.
 - Email notifications need a provider key (above); without one, only in-app
   notifications are delivered.
 - No sample/demo data is seeded. The only seeded rows are the three built-in
