@@ -104,6 +104,7 @@ export function Home({ go, me }: { go: (p: string) => void; me: User }) {
           <button onClick={() => go('events')}>Add a reminder</button>
           <button onClick={() => go('receipts')}>File a receipt</button>
           <button onClick={() => go('forms')}>New sign-in sheet</button>
+          <button onClick={() => go('notes')}>Write a note</button>
           <button onClick={checkReminders}>Check due reminders now</button>
         </div>
         <p className="muted" style={{ marginTop: 12 }}>

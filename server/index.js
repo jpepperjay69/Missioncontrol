@@ -260,6 +260,39 @@ app.delete('/api/contacts/:id', requireAuth, ah(async (req, res) => {
   res.json({ ok: true });
 }));
 
+// ---------- Shared notepad (changes fire notifications) ----------
+app.get('/api/notes', requireAuth, ah(async (req, res) => {
+  const { rows } = await pool.query('SELECT * FROM notes ORDER BY updated_at DESC');
+  res.json(rows);
+}));
+app.post('/api/notes', requireAuth, ah(async (req, res) => {
+  const { title, body } = req.body;
+  if (!title) return res.status(400).json({ error: 'Title is required.' });
+  const { rows } = await pool.query(
+    'INSERT INTO notes (title, body, author_name) VALUES ($1, $2, $3) RETURNING *',
+    [title, body || '', req.user.name],
+  );
+  await notify({ kind: 'Note added', message: `New shared note: ${title}`, entityType: 'note', entityId: rows[0].id, actorName: req.user.name });
+  res.status(201).json(rows[0]);
+}));
+app.put('/api/notes/:id', requireAuth, ah(async (req, res) => {
+  const { title, body } = req.body;
+  const { rows } = await pool.query(
+    'UPDATE notes SET title = $1, body = $2, author_name = $3, updated_at = now() WHERE id = $4 RETURNING *',
+    [title, body || '', req.user.name, req.params.id],
+  );
+  if (!rows.length) return res.status(404).json({ error: 'Not found.' });
+  await notify({ kind: 'Note changed', message: `Shared note updated: ${rows[0].title}`, entityType: 'note', entityId: rows[0].id, actorName: req.user.name });
+  res.json(rows[0]);
+}));
+app.delete('/api/notes/:id', requireAuth, ah(async (req, res) => {
+  const { rows } = await pool.query('DELETE FROM notes WHERE id = $1 RETURNING title', [req.params.id]);
+  if (rows.length) {
+    await notify({ kind: 'Note changed', message: `Shared note removed: ${rows[0].title}`, entityType: 'note', entityId: req.params.id, actorName: req.user.name });
+  }
+  res.json({ ok: true });
+}));
+
 // ---------- Thank-you letters ----------
 crud('letter-templates', 'letter_templates', ['name', 'subject', 'body']);
 

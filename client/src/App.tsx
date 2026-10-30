@@ -10,9 +10,10 @@ import { Letters } from './pages/Letters';
 import { ThriftStore } from './pages/ThriftStore';
 import { Receipts } from './pages/Receipts';
 import { Forms } from './pages/Forms';
+import { Notes } from './pages/Notes';
 import { Notifications } from './pages/Notifications';
 
-type Page = 'home' | 'donors' | 'events' | 'contacts' | 'letters' | 'thrift' | 'receipts' | 'forms' | 'notifications';
+type Page = 'home' | 'donors' | 'events' | 'contacts' | 'letters' | 'thrift' | 'receipts' | 'forms' | 'notes' | 'notifications';
 
 const NAV: { key: Page; label: string }[] = [
   { key: 'donors', label: 'Donors' },
@@ -22,6 +23,7 @@ const NAV: { key: Page; label: string }[] = [
   { key: 'thrift', label: 'Thrift Store' },
   { key: 'receipts', label: 'Receipts' },
   { key: 'forms', label: 'Forms' },
+  { key: 'notes', label: 'Notepad' },
   { key: 'notifications', label: 'Notifications' },
 ];
 
@@ -94,6 +96,7 @@ export default function App() {
         {page === 'thrift' && <ThriftStore />}
         {page === 'receipts' && <Receipts />}
         {page === 'forms' && <Forms />}
+        {page === 'notes' && <Notes />}
         {page === 'notifications' && <Notifications />}
       </div>
     </div>

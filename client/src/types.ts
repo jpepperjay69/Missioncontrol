@@ -15,3 +15,4 @@ export type Receipt = { id: number; title: string; vendor?: string; amount?: str
 export type SigninSheet = { id: number; title: string; event_id?: number | null; sheet_date?: string; location?: string };
 export type SigninEntry = { id: number; sheet_id: number; name: string; contact?: string; time_in?: string };
 export type Notification = { id: number; kind: string; message: string; entity_type?: string; entity_id?: number; actor_name?: string; is_read: boolean; created_at: string };
+export type Note = { id: number; title: string; body: string; author_name?: string; created_at: string; updated_at: string };
