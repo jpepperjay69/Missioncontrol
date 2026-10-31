@@ -99,7 +99,7 @@ export function Receipts() {
             <div><label>Vendor</label><input value={vendor} onChange={(e) => setVendor(e.target.value)} /></div>
             <div><label>Amount</label><input type="number" step="0.01" min="0" value={amount} onChange={(e) => setAmount(e.target.value)} /></div>
             <div><label>Date</label><input type="date" value={receiptDate} onChange={(e) => setReceiptDate(e.target.value)} /></div>
-            <div className="full"><label>Take a photo</label><input type="file" ref={cameraRef} accept="image/*" capture="environment" onChange={(e) => onPick(e, fileRef)} /></div>
+            <div className="full"><label>Take a photo</label><input type="file" ref={cameraRef} accept="image/*" capture="environment" onChange={(e) => onPick(e, fileRef)} style={{ position: 'absolute', opacity: 0, width: 1, height: 1 }} /><button type="button" onClick={() => cameraRef.current?.click()}>Open camera</button></div>
             <div className="full"><label>Or choose a file</label><input type="file" ref={fileRef} accept="image/*,application/pdf" onChange={(e) => onPick(e, cameraRef)} /></div>
             {selectedName && <p className="muted">Selected: {selectedName} · photos are shrunk to filing size before upload.</p>}
             {previewUrl && <div className="full"><img src={previewUrl} alt="Receipt preview" style={{ maxWidth: '100%', maxHeight: 240, borderRadius: 8 }} /></div>}
