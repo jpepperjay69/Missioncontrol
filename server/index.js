@@ -136,7 +136,7 @@ app.put('/api/users/:id/password', requireAuth, ah(async (req, res) => {
 
 // ---------- Dashboard stats ----------
 app.get('/api/stats', requireAuth, ah(async (req, res) => {
-  const [[donors], [gifts], [events], [reminders], [notes]] = await Promise.all([
+  const [donors, gifts, events, reminders, notes] = await Promise.all([
     pool.query('SELECT COUNT(*)::int AS n FROM donors').then((r) => r.rows[0]),
     pool.query('SELECT COUNT(*)::int AS n, COALESCE(SUM(amount), 0) AS total FROM gifts').then((r) => r.rows[0]),
     pool.query("SELECT COUNT(*)::int AS n FROM events WHERE event_date >= CURRENT_DATE").then((r) => r.rows[0]),
